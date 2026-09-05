@@ -42,18 +42,22 @@ The content below follows the original report verbatim: each experiment states t
 
 **不同步长下采用同一求解方法时产生的误差：**采用二阶显式Adams法(1.2)，步长取h=0.1和h=0.05，由实验试题可知，$f_{k} = 4t_{k}{u_{k}}^{1/2}$。使用Euler法算出$u_{1}$，再通过迭代依次算出$u_{2}$到$u_{20}$
 
-$$\begin{array}{r}
+
+```math
 u_{k + 1} = u_{k} + \frac{h}{2}\left( 3f_{k} - f_{k - 1} \right).
-\end{array}$$
+```
+
 
 接着通过符号计算求解了常微分方程的精确解，将其转换为可调用的函数，并在时间区间内生成1000个等间距点计算对应的数值解，最终绘制精确解曲线（黑色实线），同时添加图例、坐标轴标签和标题。
 
 
 **同一步长下采用不同求解方法产生的误差：**采用二阶显式Adams法和梯形法(1.3)，步长取h=0.1。方法同上。
 
-$$\begin{array}{r}
-u_{k + 1} = u_{k} + \frac{h}{2}\left\lbrack f\left( t_{k},u_{k} \right),f\left( t_{k + 1},u_{k + 1} \right) \right\rbrack.
-\end{array}$$
+
+```math
+u_{k + 1} = u_{k} + \frac{h}{2}\left[ f\left( t_{k},u_{k} \right),f\left( t_{k + 1},u_{k + 1} \right) \right].
+```
+
 
 
 # 实验结果及分析
@@ -90,110 +94,132 @@ u_{k + 1} = u_{k} + \frac{h}{2}\left\lbrack f\left( t_{k},u_{k} \right),f\left( 
 
 对于二维Poisson方程的Dirichlet边值问题
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
- - \Delta u = f(x,y),\ \ \ (x,y) \in \Omega, \\
+
+```math
+\begin{cases}
+ - \Delta u = f(x,y),\ \ \ (x,y) \in \Omega, 
 u = \varphi(x,y),\ \ \ (x,y) \in \Gamma.
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 在内节点$(x_{i},y_{i})$处用二阶中心差商$u_{xx},u_{yy}$，并引入差分算子
 
-$$\begin{array}{r}
+
+```math
 \mathrm{\Delta}_{h}u_{i,j} = \frac{u_{i - 1,j} - 2u_{i,j} + u_{i + 1,j}}{h_{1}^{2}} + \frac{u_{i,j - 1} - 2u_{i,j} + u_{i,j + 1}}{h_{2}^{2}},
-\end{array}$$
+```
+
 
 可用差分方程(2.4)求解
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
- - \mathrm{\Delta}_{h}u_{i,j} = f\left( x_{i},y_{j} \right),\ \ \ (i,j) \in \omega, \\
+
+```math
+\begin{cases}
+ - \mathrm{\Delta}_{h}u_{i,j} = f\left( x_{i},y_{j} \right),\ \ \ (i,j) \in \omega, 
 u_{i,j} = \varphi\left( x_{i},y_{j} \right),\ \ \ (i,j) \in \gamma.
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 将（2.3）和（2.4）改写为未知量的线性方程组
 
-| $$- \frac{1}{h_{2}^{2}}u_{i,j - 1} + \left\lbrack - \frac{1}{h_{1}^{2}}u_{i - 1,j} + \left( \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}} \right)u_{i,j} - \frac{1}{h_{1}^{2}}u_{i + 1,j} \right\rbrack - \frac{1}{h_{2}^{2}}u_{i,j + 1} = f\left( x_{i},y_{j} \right),$$ | $$(2.5)$$ |
+```math
+- \frac{1}{h_{2}^{2}}u_{i,j - 1} + \left[ - \frac{1}{h_{1}^{2}}u_{i - 1,j} + \left( \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}} \right)u_{i,j} - \frac{1}{h_{1}^{2}}u_{i + 1,j} \right] - \frac{1}{h_{2}^{2}}u_{i,j + 1} = f\left( x_{i},y_{j} \right),
+```
+```math
+(2.5)
+```
 |                                                                                                                                                                                                                                                                       |           |
-| $$1 \leq i \leq m - 1,\ 1 \leq j \leq n - 1.$$                                                                                                                                                                                                                        |           |
+```math
+1 \leq i \leq m - 1,\ 1 \leq j \leq n - 1.
+```
+                                                                                                                                                                                                                        |           |
 
 记
 
-$$\begin{array}{r}
+
+```math
 u_{j} = \begin{bmatrix}
-u_{1,j} \\
-u_{2,j} \\
+u_{1,j} 
+u_{2,j} 
 \begin{matrix}
- \vdots \\
+ \vdots 
 \begin{matrix}
-u_{m - 2,j} \\
+u_{m - 2,j} 
 u_{m - 1,j}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},\ \ f_{j} = \begin{bmatrix}
-f_{1,j} + \frac{1}{h_{1}^{2}}\varphi_{0,j} \\
-f_{2,j}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+f_{1,j} + \frac{1}{h_{1}^{2}}\varphi_{0,j} 
+f_{2,j}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-f_{m - 2,j}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+f_{m - 2,j}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 f_{m - 1,j} + \frac{1}{h_{1}^{2}}\varphi_{m,j}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},
-\end{array}$$
+```
 
-$$\begin{array}{r}
+
+
+```math
 \begin{matrix}
-D = diag\{ - \frac{1}{h_{2}^{2}},..., - \frac{1}{h_{2}^{2}}\}, \\
+D = diag\{ - \frac{1}{h_{2}^{2}},..., - \frac{1}{h_{2}^{2}}\}, 
 C = \begin{bmatrix}
-\frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
- - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+\frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+ - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}} \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ 
+\ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}} 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}
 \end{matrix}
 \end{bmatrix}
 \end{matrix}.
-\end{array}$$
+```
+
 
 则差分方程可以写成
 
-$$\begin{array}{r}
+
+```math
 Du_{j - 1} + Cu_{j} + Du_{j + 1} = f_{j},\ \ 1 \leq j \leq n - 1.
-\end{array}$$
+```
+
 
 进一步可以写成
 
-$$\begin{array}{r}
+
+```math
 \begin{bmatrix}
-C\ \ \ D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-D\ \ \ C\ \ \ D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+C\ \ \ D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+D\ \ \ C\ \ \ D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \  \ddots \ \ \  \ddots \ \ \  \ddots \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ \ C\ \ \ D \\
+\ \ \ \ \ \ \  \ddots \ \ \  \ddots \ \ \  \ddots 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ \ C\ \ \ D 
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D\ \ \ C
 \end{matrix}
 \end{bmatrix}\begin{bmatrix}
-u_{1} \\
-u_{2} \\
+u_{1} 
+u_{2} 
 \begin{matrix}
- \vdots \\
-u_{n - 2} \\
+ \vdots 
+u_{n - 2} 
 u_{n - 1}
 \end{matrix}
 \end{bmatrix} = \begin{bmatrix}
-f_{1} - Du_{0} \\
-f_{2}\ \ \ \ \ \ \ \ \  \\
+f_{1} - Du_{0} 
+f_{2}\ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \  \\
-f_{n - 2}\ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \  
+f_{n - 2}\ \ \ \ \ \ \ \ \  
 f_{n - 1} - Du_{n}
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 由公式2.1可知，边界条件都为0，所以$\frac{1}{h_{1}^{2}}\varphi_{i,j}$和$Du_{j}$都为0。编写程序时，先构造由C和D构成的分块系数矩阵，再通过网格节点数依次计算Poisson方程右端项的值，构造f向量。用矩阵求逆算出内一列节点u的值，重新排列u，并在周围加一圈外节点，获得网格函数的矩阵。使用meshgrid函数绘制三维图像。同时把网格矩阵降维成一维向量，和精确解绘制在同一张二维图像中，进行对比。
 
@@ -289,121 +315,139 @@ f_{n - 1} - Du_{n}
 
 对于一维抛物方程的初边值问题
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
-\frac{\partial u}{\partial t} = a\frac{\partial^{2}u}{\partial x^{2}} + f(x,t),\ \ 0 < x < 1,t > 0, \\
-u(x,0) = \varphi(x),\ \ 0 < x < 1, \\
+
+```math
+\begin{cases}
+\frac{\partial u}{\partial t} = a\frac{\partial^{2}u}{\partial x^{2}} + f(x,t),\ \ 0 < x < 1,t > 0, 
+u(x,0) = \varphi(x),\ \ 0 < x < 1, 
 u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 将求解区域
 
-$$\begin{array}{r}
-G = \left\{ (x,y) \middle| 0 \leq x \leq 1,0 \leq t \leq T \right\},
-\end{array}$$
+
+```math
+G = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\},
+```
+
 
 作剖分。将区间$\lbrack 0,l\rbrack$作$m$等分，将区间$\lbrack 0,T\rbrack$作n等分，记
 
-$$\begin{array}{r}
-h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
+
+```math
+h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), 
 \tau = \frac{T}{n},\ \ t_{k} = k\tau,(0 \leq k \leq n),
-\end{array}$$
+```
+
 
 分别称$h$和$\tau$为空间步长和时间步长。
 
 将（3.3）作向前差分格式：
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
-\frac{u_{i,k + 1} - u_{i,k}}{\tau} = a\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} + f_{i,k},\  \\
-u_{i,0} = \varphi\left( x_{i} \right), \\
+
+```math
+\begin{cases}
+\frac{u_{i,k + 1} - u_{i,k}}{\tau} = a\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} + f_{i,k},\  
+u_{i,0} = \varphi\left( x_{i} \right), 
 u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 其中$i = 1,2,\ldots,m - 1,\ k = 1,2,\ldots,n.$
 
 令$r = a\frac{\tau}{h^{2}}$，将（3.5）改写为线性方程组
 
-$$\begin{array}{r}
-u_{i,k + 1} = ru_{i - 1,k} + (1 - 2r)u_{i,k} + ru_{i + 1,k} + f_{i,k}, \\
+
+```math
+u_{i,k + 1} = ru_{i - 1,k} + (1 - 2r)u_{i,k} + ru_{i + 1,k} + f_{i,k}, 
 1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 记
 
-$$\begin{array}{r}
+
+```math
 u_{k} = \begin{bmatrix}
-u_{1,k} \\
-u_{2,k} \\
+u_{1,k} 
+u_{2,k} 
 \begin{matrix}
- \vdots \\
+ \vdots 
 \begin{matrix}
-u_{m - 2,k} \\
+u_{m - 2,k} 
 u_{m - 1,k}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},\ \ f_{k} = \begin{bmatrix}
-\tau f_{1,k} + ru_{0,k} \\
-\tau f_{2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+\tau f_{1,k} + ru_{0,k} 
+\tau f_{2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-{\tau f}_{m - 2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+{\tau f}_{m - 2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \tau f_{m - 1,k} + r\varphi_{m,k}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},
-\end{array}$$
+```
 
-$$\begin{array}{r}
+
+
+```math
 R = \begin{bmatrix}
-1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-r\ \ \ \ \ 1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+r\ \ \ \ \ 1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ \ \ \ \ 1 - 2r\ \ \ \ r \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ \ \ \ \ 1 - 2r\ 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ \ \ \ \ 1 - 2r\ \ \ \ r 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ \ \ \ \ 1 - 2r
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 则（3.6）可以写成
 
-$$\begin{array}{r}
+
+```math
 Ru_{k} - Iu_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 其中$I$表示单位矩阵，进一步写成矩阵形式：
 
-$$\begin{array}{r}
+
+```math
 \begin{bmatrix}
- - I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-R\  - I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+R\  - I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \ddots \ \ \  \ddots \ \ \  \ddots \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - I\ \ \ \ \  \\
+ \ddots \ \ \  \ddots \ \ \  \ddots 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - I\ \ \ \ \  
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ R\ \  - I
 \end{matrix}
 \end{bmatrix}\begin{bmatrix}
-u_{1} \\
-u_{2} \\
+u_{1} 
+u_{2} 
 \begin{matrix}
- \vdots \\
-u_{n - 1} \\
+ \vdots 
+u_{n - 1} 
 u_{n}
 \end{matrix}
 \end{bmatrix} = \begin{bmatrix}
- - f_{1} - Ru_{0} \\
-{- f}_{2}\ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - f_{1} - Ru_{0} 
+{- f}_{2}\ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \  \\
- - f_{n - 1}\ \ \ \ \ \ \ \ \  \\
-{- f}_{n}\ \ \ \ \ \ \ \ \ \ \ \ \ 
+ \vdots \ \ \ \ \ \ \ \ \  
+ - f_{n - 1}\ \ \ \ \ \ \ \ \  
+{- f}_{n}\ \ \ \ \ \ \ \ \ \ \ \ 
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 先构造$R$矩阵，接着构造由$R$和单位阵组成的分块系数矩阵。根据（3.1）可知，$u_{0} = \cos(\pi ih),\ 1 \leq i \leq m - 1$，因此由$f_{k}$构成的方程右端项矩阵最后还需添加初始条件。最后，矩阵求逆算出节点$u$、精确解与数值解对比、网格函数可视化这部分思路与实验二类似，可以沿用。
 
@@ -417,107 +461,119 @@ u_{n}
 
 将（3.2）作Grank-Nicolson格式：
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
-\frac{u_{i,k + 1} - u_{i,k}}{\tau} = \frac{a}{2}\left\lbrack \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} + \frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} \right\rbrack \\
- + \frac{1}{2}\lbrack f\left( x_{i},t_{k} \right) + f\left( x_{i},t_{k + 1} \right)\rbrack,\  \\
-u_{i,0} = \varphi\left( x_{i} \right), \\
+
+```math
+\begin{cases}
+\frac{u_{i,k + 1} - u_{i,k}}{\tau} = \frac{a}{2}\left[ \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} + \frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} \right] 
+ + \frac{1}{2}[ f\left( x_{i},t_{k} \right) + f\left( x_{i},t_{k + 1} \right)],\  
+u_{i,0} = \varphi\left( x_{i} \right), 
 u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 其中$i = 1,2,\ldots,m - 1,\ k = 1,2,\ldots,n.$
 
 令$r = a\frac{\tau}{h^{2}}$，将（3.11）改写为线性方程组
 
-$$\begin{array}{r}
- - \frac{r}{2}u_{i - 1,k + 1} + (1 + r)u_{i,k + 1} - \frac{r}{2}u_{i + 1,k + 1} = \\
-\frac{r}{2}u_{i - 1,k} + (1 - r)u_{i,k} + \frac{r}{2}u_{i + 1,k} + \frac{\tau}{2}\lbrack f_{i,k + 1} + f_{i,k}\rbrack, \\
+
+```math
+- \frac{r}{2}u_{i - 1,k + 1} + (1 + r)u_{i,k + 1} - \frac{r}{2}u_{i + 1,k + 1} = 
+\frac{r}{2}u_{i - 1,k} + (1 - r)u_{i,k} + \frac{r}{2}u_{i + 1,k} + \frac{\tau}{2}[ f_{i,k + 1} + f_{i,k}], 
 1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 记
 
-$$\begin{array}{r}
+
+```math
 u_{k} = \begin{bmatrix}
-u_{1,k} \\
-u_{2,k} \\
+u_{1,k} 
+u_{2,k} 
 \begin{matrix}
- \vdots \\
+ \vdots 
 \begin{matrix}
-u_{m - 2,k} \\
+u_{m - 2,k} 
 u_{m - 1,k}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},\ \ f_{k} = \begin{bmatrix}
-{\frac{\tau}{2}(f}_{1,k} + f_{1,k + 1}) + \frac{r}{2}{(\varphi}_{0,k} + \varphi_{0,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\frac{\tau}{2}{(f}_{2,k} + f_{2,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+{\frac{\tau}{2}(f}_{1,k} + f_{1,k + 1}) + \frac{r}{2}{(\varphi}_{0,k} + \varphi_{0,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\frac{\tau}{2}{(f}_{2,k} + f_{2,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-{\frac{\tau}{2}(f}_{m - 2,k} + f_{m - 2,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+{\frac{\tau}{2}(f}_{m - 2,k} + f_{m - 2,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \frac{\tau}{2}{(f}_{m - 1,k} + f_{m - 1,k + 1}) + \frac{r}{2}{(\varphi}_{m - 1,k} + \varphi_{m - 1,k + 1})
 \end{matrix}
 \end{matrix}
 \end{bmatrix},
-\end{array}$$
+```
 
-$$\begin{array}{r}
+
+
+```math
 R_{1} = \begin{bmatrix}
-1 + r\ \ \  - \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
- - \frac{r}{2}\ \ \ \ \ 1 + r\ \ \ \  - \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+1 + r\ \ \  - \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+ - \frac{r}{2}\ \ \ \ \ 1 + r\ \ \ \  - \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{r}{2}\ \ \ \ \ \ 1 + r\ \ \ \  - \frac{r}{2} \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{r}{2}\ \ \ \ \ 1 + r\ 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{r}{2}\ \ \ \ \ \ 1 + r\ \ \ \  - \frac{r}{2} 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{r}{2}\ \ \ \ \ 1 + r
 \end{matrix}
-\end{bmatrix}, \\
+\end{bmatrix}, 
 R_{2} = \begin{bmatrix}
-1 - r\ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\frac{r}{2}\ \ \ \ \ \ 1 - r\ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+1 - r\ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\frac{r}{2}\ \ \ \ \ \ 1 - r\ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ 1 - r\ \ \ \ \ \ \frac{r}{2} \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ 1 - r\ 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ 1 - r\ \ \ \ \ \ \frac{r}{2} 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ 1 - r
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 则（3.13）可以写成
 
-$$\begin{array}{r}
+
+```math
 R_{2}u_{k} - {R_{1}u}_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 其中$I$表示单位矩阵，进一步写成矩阵形式：
 
-$$\begin{array}{r}
+
+```math
 \begin{bmatrix}
- - R_{1}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-R_{2}\  - R_{1}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - R_{1}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+R_{2}\  - R_{1}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \ddots \ \ \  \ddots \ \ \  \ddots \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - R_{1}\ \ \ \ \ \ \ \  \\
+ \ddots \ \ \  \ddots \ \ \  \ddots 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - R_{1}\ \ \ \ \ \ \ \  
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ R_{2}\ \  - R_{1}
 \end{matrix}
 \end{bmatrix}\begin{bmatrix}
-u_{1} \\
-u_{2} \\
+u_{1} 
+u_{2} 
 \begin{matrix}
- \vdots \\
-u_{n - 1} \\
+ \vdots 
+u_{n - 1} 
 u_{n}
 \end{matrix}
 \end{bmatrix} = \begin{bmatrix}
- - f_{1} - R_{2}u_{0} \\
-{- f}_{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - f_{1} - R_{2}u_{0} 
+{- f}_{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \ \  \\
- - f_{n - 1}\ \ \ \ \ \ \ \ \ \  \\
-{- f}_{n\ \ \ \ \ \ }\ \ \ \ \ \ \ \ \ \ 
+ \vdots \ \ \ \ \ \ \ \ \ \  
+ - f_{n - 1}\ \ \ \ \ \ \ \ \ \  
+{- f}_{n\ \ \ \ \ \ }\ \ \ \ \ \ \ \ \ 
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 先构造$R_{1}$和$R_{2}$矩阵，接着构造由$R_{1}$和$R_{2}$组成的分块系数矩阵。根据（3.1）可知，$u_{0} = \cos(\pi ih),\ 1 \leq i \leq m - 1$，因此由$f_{k}$构成的方程右端项矩阵最后添加初始条件。最后，矩阵求逆算出节点$u$、精确解与数值解对比、网格函数可视化。其中添加了可视化精确解与数值解的误差的绝对值。
 
@@ -622,226 +678,254 @@ u_{n}
 
 对于波动方程的初边值问题
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
-\frac{\partial^{2}u}{\partial t^{2}} = a\frac{\partial^{2}u}{\partial x^{2}} + f(x,t),\ \ 0 < x < 1,t > 0, \\
-u(x,0) = \varphi(x),\ \ 0 < x < 1, \\
+
+```math
+\begin{cases}
+\frac{\partial^{2}u}{\partial t^{2}} = a\frac{\partial^{2}u}{\partial x^{2}} + f(x,t),\ \ 0 < x < 1,t > 0, 
+u(x,0) = \varphi(x),\ \ 0 < x < 1, 
 u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 将求解区域
 
-$$\begin{array}{r}
-\Omega = \left\{ (x,y) \middle| 0 \leq x \leq 1,0 \leq t \leq T \right\},
-\end{array}$$
+
+```math
+\Omega = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\},
+```
+
 
 作剖分。将区间$\lbrack 0,l\rbrack$作$m$等分，将区间$\lbrack 0,T\rbrack$作n等分，记
 
-$$\begin{array}{r}
-h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
+
+```math
+h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), 
 \tau = \frac{T}{n},\ \ t_{k} = k\tau,(0 \leq k \leq n),
-\end{array}$$
+```
+
 
 分别称$h$和$\tau$为空间步长和时间步长。
 
 将（4.3）作显式格式：
 
-$$\begin{array}{r}
-\left\{ \begin{array}{r}
-\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} + f_{i,k},\  \\
-u_{i,0} = \varphi\left( x_{i} \right), \\
+
+```math
+\begin{cases}
+\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} + f_{i,k},\  
+u_{i,0} = \varphi\left( x_{i} \right), 
 u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
-\end{array} \right.\ 
-\end{array}$$
+\end{cases}
+```
+
 
 其中$i = 1,2,\ldots,m - 1,\ k = 1,2,\ldots,n.$
 
 令$r = a\frac{\tau}{h}$，将（4.5）改写为线性方程组
 
-$$\begin{array}{r}
-u_{i,k + 1} = r^{2}u_{i - 1,k} + 2\left( 1 - 2r^{2} \right)u_{i,k} + r^{2}u_{i + 1,k} - u_{i,k - 1} + {\tau^{2}f}_{i,k}, \\
+
+```math
+u_{i,k + 1} = r^{2}u_{i - 1,k} + 2\left( 1 - 2r^{2} \right)u_{i,k} + r^{2}u_{i + 1,k} - u_{i,k - 1} + {\tau^{2}f}_{i,k}, 
 1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 记
 
-$$\begin{array}{r}
+
+```math
 u_{k} = \begin{bmatrix}
-u_{1,k} \\
-u_{2,k} \\
+u_{1,k} 
+u_{2,k} 
 \begin{matrix}
- \vdots \\
+ \vdots 
 \begin{matrix}
-u_{m - 2,k} \\
+u_{m - 2,k} 
 u_{m - 1,k}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},\ \ f_{k} = \begin{bmatrix}
-\tau^{2}f_{1,k} + r^{2}u_{0,k} \\
-\tau^{2}f_{2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+\tau^{2}f_{1,k} + r^{2}u_{0,k} 
+\tau^{2}f_{2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-{\tau^{2}f}_{m - 2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+{\tau^{2}f}_{m - 2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \tau^{2}f_{m - 1,k} + r^{2}\varphi_{m,k}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},
-\end{array}$$
+```
 
-$$\begin{array}{r}
+
+
+```math
 R = \begin{bmatrix}
-2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2} \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2} 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 则（4.6）可以写成
 
-$$\begin{array}{r}
+
+```math
 Iu_{k - 1} - Ru_{k} + Iu_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 其中$I$表示单位矩阵，进一步写成矩阵形式：
 
-$$\begin{array}{r}
+
+```math
 \begin{bmatrix}
- - R\ \ \ I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-I - R\ \ \ I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - R\ \ \ I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+I - R\ \ \ I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\  \ddots \ \ \  \ddots \ \ \  \ddots \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ I\  - R\ \ \ I \\
+\  \ddots \ \ \  \ddots \ \ \  \ddots 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ I\  - R\ \ \ I 
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ I - R
 \end{matrix}
 \end{bmatrix}\begin{bmatrix}
-u_{1} \\
-u_{2} \\
+u_{1} 
+u_{2} 
 \begin{matrix}
- \vdots \\
-u_{n - 2} \\
+ \vdots 
+u_{n - 2} 
 u_{n - 1}
 \end{matrix}
 \end{bmatrix} = \begin{bmatrix}
-f_{1} - u_{0} \\
-f_{2}\ \ \ \ \ \ \ \ \  \\
+f_{1} - u_{0} 
+f_{2}\ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \  \\
-f_{n - 2}\ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \  
+f_{n - 2}\ \ \ \ \ \ \ \ \  
 f_{n - 1} - u_{n}
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 **2.2 隐式格式**
 
 将（4.3）作隐式格式：
 
-$$\begin{array}{r}
-\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a^{2}\left\lbrack \begin{array}{r}
-\theta\frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} \\
- + (1 - 2\theta)\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} \\
- + \theta\frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}}
-\end{array} \right\rbrack + f_{i,k},
-\end{array}$$
+
+```math
+\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a^{2}\left[ \begin{aligned} \theta\frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} 
+ + (1 - 2\theta)\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} 
+ + \theta\frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} \end{aligned} \right] + f_{i,k},
+```
+
 
 其中$0 \leq \theta \leq 1,$当$\theta = 0$时为显格式.
 
 考虑$\theta = \frac{1}{2}$的情况，得到隐式差分格式
 
-$$\begin{array}{r}
-\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = \frac{a^{2}}{2}\left\lbrack \begin{array}{r}
-\frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} \\
- + \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}}
-\end{array} \right\rbrack + f_{i,k},
-\end{array}$$
+
+```math
+\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = \frac{a^{2}}{2}\left[ \begin{aligned} \frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} 
+ + \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} \end{aligned} \right] + f_{i,k},
+```
+
 
 令$r = a\frac{\tau}{h}$，将（4.12）改写为线性方程组
 
-$$\begin{array}{r}
- - ({\frac{1}{2}r}^{2}u_{i - 1,k + 1} - \left( 1 + r^{2} \right)u_{i,k + 1} + \frac{1}{2}r^{2}u_{i + 1,k + 1}) \\
- = {\frac{1}{2}r}^{2}u_{i - 1,k - 1} - \left( 1 + r^{2} \right)u_{i,k - 1} + \frac{1}{2}r^{2}u_{i + 1,k - 1} + 2u_{i,k} + {\tau^{2}f}_{i,k}, \\
+
+```math
+- ({\frac{1}{2}r}^{2}u_{i - 1,k + 1} - \left( 1 + r^{2} \right)u_{i,k + 1} + \frac{1}{2}r^{2}u_{i + 1,k + 1}) 
+ = {\frac{1}{2}r}^{2}u_{i - 1,k - 1} - \left( 1 + r^{2} \right)u_{i,k - 1} + \frac{1}{2}r^{2}u_{i + 1,k - 1} + 2u_{i,k} + {\tau^{2}f}_{i,k}, 
 1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+```
+
 
 记
 
-$$\begin{array}{r}
+
+```math
 u_{k} = \begin{bmatrix}
-u_{1,k} \\
-u_{2,k} \\
+u_{1,k} 
+u_{2,k} 
 \begin{matrix}
- \vdots \\
+ \vdots 
 \begin{matrix}
-u_{m - 2,k} \\
+u_{m - 2,k} 
 u_{m - 1,k}
 \end{matrix}
 \end{matrix}
 \end{bmatrix},\ \ f_{k} = \begin{bmatrix}
-{\tau^{2}f}_{1,k} + \frac{r^{2}}{2}{(\varphi}_{0,k - 1} + \varphi_{0,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\tau^{2}f_{2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+{\tau^{2}f}_{1,k} + \frac{r^{2}}{2}{(\varphi}_{0,k - 1} + \varphi_{0,k + 1})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\tau^{2}f_{2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-{\tau^{2}f}_{m - 2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+{\tau^{2}f}_{m - 2,k}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \tau^{2}f_{m - 1,k} + \frac{r^{2}}{2}{(\varphi}_{m - 1,k - 1} + \varphi_{m - 1,k + 1})
 \end{matrix}
 \end{matrix}
 \end{bmatrix},
-\end{array}$$
+```
 
-$$\begin{array}{r}
+
+
+```math
 R = \begin{bmatrix}
- - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\frac{r^{2}}{2}\ \ \ \  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\frac{r^{2}}{2}\ \ \ \  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r^{2}}{2}\ \ \ \ \  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2} \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r^{2}}{2}\ \ \ \ \  - (1 + r^{2})\ 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \  \ddots \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r^{2}}{2}\ \ \ \ \  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2} 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r^{2}}{2}\ \ \ \ \  - (1 + r^{2})
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 则（3.13）可以写成
 
-$$\begin{array}{r}
- - Ru_{k - 1} - 2Iu_{k} + {Ru}_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1.
-\end{array}$$
+
+```math
+- Ru_{k - 1} - 2Iu_{k} + {Ru}_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1.
+```
+
 
 其中$I$表示单位矩阵，进一步写成矩阵形式：
 
-$$\begin{array}{r}
+
+```math
 \begin{bmatrix}
- - 2I\ \ \ R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
- - R - 2I\ \ \ R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
+ - 2I\ \ \ R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
+ - R - 2I\ \ \ R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
 \begin{matrix}
-\  \ddots \ \ \  \ddots \ \ \  \ddots \\
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - R\  - 2I\ \ \ R \\
+\  \ddots \ \ \  \ddots \ \ \  \ddots 
+\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - R\  - 2I\ \ \ R 
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - R - 2I
 \end{matrix}
 \end{bmatrix}\begin{bmatrix}
-u_{1} \\
-u_{2} \\
+u_{1} 
+u_{2} 
 \begin{matrix}
- \vdots \\
-u_{n - 2} \\
+ \vdots 
+u_{n - 2} 
 u_{n - 1}
 \end{matrix}
 \end{bmatrix} = \begin{bmatrix}
-f_{1} + Ru_{0} \\
-f_{2}\ \ \ \ \ \ \ \ \  \\
+f_{1} + Ru_{0} 
+f_{2}\ \ \ \ \ \ \ \ \  
 \begin{matrix}
- \vdots \ \ \ \ \ \ \ \ \  \\
-f_{n - 2}\ \ \ \ \ \ \ \ \  \\
+ \vdots \ \ \ \ \ \ \ \ \  
+f_{n - 2}\ \ \ \ \ \ \ \ \  
 f_{n - 1} - Ru_{n}
 \end{matrix}
 \end{bmatrix}.
-\end{array}$$
+```
+
 
 # 实验结果及分析
 
