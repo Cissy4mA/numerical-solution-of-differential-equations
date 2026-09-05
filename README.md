@@ -28,9 +28,17 @@ numerical-solution-of-differential-equations/
 
 The content below follows the original report verbatim: each experiment states the problem, the numerical principle and formulas, the computed results (figures), and the conclusions. Formulas are rendered with LaTeX; the MATLAB code is provided as source files rather than inline.
 
-**实验一 常微分方程数值解法**
+# 实验一 常微分方程数值解法
 
-# 实验试题
+## 实验试题
+
+```math
+\begin{cases}
+u' = 4 t u^{1/2},\quad 0 \leq t \leq 2, \\
+u(0) = 1. \qquad (1.1)
+\end{cases}
+```
+
 
 求解下列初值问题的数值解：
 
@@ -38,14 +46,14 @@ The content below follows the original report verbatim: each experiment states t
 
 要求：选择不同的步长及不同的求解方法（收敛阶不同），对比不同步长下采用同一求解方法时产生的误差，以及同一步长下采用不同求解方法产生的误差。
 
-# 试题分析及求解过程
+## 试题分析及求解过程
 
 **不同步长下采用同一求解方法时产生的误差：**采用二阶显式Adams法(1.2)，步长取h=0.1和h=0.05，由实验试题可知，$`f_{k} = 4t_{k}{u_{k}}^{1/2}`$。使用Euler法算出$`u_{1}`$，再通过迭代依次算出$`u_{2}`$到$`u_{20}`$
 
 
 
 ```math
-u_{k + 1} = u_{k} + \frac{h}{2}\left( 3f_{k} - f_{k - 1} \right). \\
+\begin{aligned} u_{k + 1} = u_{k} + \frac{h}{2}\left( 3f_{k} - f_{k - 1} \right). \qquad (1.2) \end{aligned}
 ```
 
 
@@ -58,13 +66,13 @@ u_{k + 1} = u_{k} + \frac{h}{2}\left( 3f_{k} - f_{k - 1} \right). \\
 
 
 ```math
-u_{k + 1} = u_{k} + \frac{h}{2}\left[ f\left( t_{k},u_{k} \right),f\left( t_{k + 1},u_{k + 1} \right) \right]. \\
+\begin{aligned} u_{k + 1} = u_{k} + \frac{h}{2}\left[ f\left( t_{k},u_{k} \right),f\left( t_{k + 1},u_{k + 1} \right) \right]. \qquad (1.3) \end{aligned}
 ```
 
 
 
 
-# 实验结果及分析
+## 实验结果及分析
 
 **不同步长下采用同一求解方法时产生的误差：**通过图1不难看出，步长为0.05比步长为0.1的显式Adams法求得的数值解更接近精确解曲线。所以可以得出结论步长越小，求得的数值解更精确。通过tictoc记录不同步长下的用时，得到步长为0.1时"历时 0.080657 秒"， 步长为0.05时"历时 0.078674 秒"，运行时长相差不大。
 
@@ -76,13 +84,21 @@ u_{k + 1} = u_{k} + \frac{h}{2}\left[ f\left( t_{k},u_{k} \right),f\left( t_{k +
 ![](images/fig_002.jpg)
 图 1‑2 同一步长不同求解方法
 
-# 总结
+## 总结
 
 实验结果表明，梯形法虽然在精度上显著优于显式Adams法，但其计算成本也更高，这表明在实际应用中，需要根据问题的具体需求选择合适的数值方法。对于对精度要求极高的问题，梯形法是更好的选择；而对于对效率要求较高的问题，显式Adams法则更为合适。此外，步长的选择对数值解的精度有直接影响，步长越小，数值解越接近精确解，但步长的减小并不总是导致计算时间的增加，这可能与实验环境或具体实现有关。通过tictoc记录运行时间，验证了不同方法和步长下的计算效率，这为数值方法的选择提供了实际依据。总体而言，本次实验不仅加深了我对数值方法的理解，还提供了在实际应用中选择和优化数值方法的案例。
 
-**实验二 椭圆型方程的数值解法**
+# 实验二 椭圆型方程的数值解法
 
-# 实验试题
+## 实验试题
+
+```math
+\begin{cases}
+\Delta u = 2\pi^{2} e^{\pi(x+y)}(\sin \pi x \cos \pi y + \cos \pi x \sin \pi y),\quad (x,y) \in G = (0,1)\times(0,1), \\
+u(x,y) = 0,\quad (x,y) \in \partial G. \qquad (2.1)
+\end{cases}
+```
+
 
 求下列边值问题的数值解：
 
@@ -92,17 +108,17 @@ u_{k + 1} = u_{k} + \frac{h}{2}\left[ f\left( t_{k},u_{k} \right),f\left( t_{k +
 
 要求：取步长 , 作五点差分格式。
 
-# 试题分析及求解过程
+## 试题分析及求解过程
 
 对于二维Poisson方程的Dirichlet边值问题
 
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
  - \Delta u = f(x,y),\ \ \ (x,y) \in \Omega, \\
 u = \varphi(x,y),\ \ \ (x,y) \in \Gamma.
-\end{cases}\
+\end{cases}\  \qquad (2.2) \end{aligned}
 ```
 
 
@@ -112,7 +128,7 @@ u = \varphi(x,y),\ \ \ (x,y) \in \Gamma.
 
 
 ```math
-\mathrm{\Delta}_{h}u_{i,j} = \frac{u_{i - 1,j} - 2u_{i,j} + u_{i + 1,j}}{h_{1}^{2}} + \frac{u_{i,j - 1} - 2u_{i,j} + u_{i,j + 1}}{h_{2}^{2}}, \\
+\begin{aligned} \mathrm{\Delta}_{h}u_{i,j} = \frac{u_{i - 1,j} - 2u_{i,j} + u_{i + 1,j}}{h_{1}^{2}} + \frac{u_{i,j - 1} - 2u_{i,j} + u_{i,j + 1}}{h_{2}^{2}}, \qquad (2.3) \end{aligned}
 ```
 
 
@@ -122,10 +138,10 @@ u = \varphi(x,y),\ \ \ (x,y) \in \Gamma.
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
  - \mathrm{\Delta}_{h}u_{i,j} = f\left( x_{i},y_{j} \right),\ \ \ (i,j) \in \omega, \\
 u_{i,j} = \varphi\left( x_{i},y_{j} \right),\ \ \ (i,j) \in \gamma.
-\end{cases}\
+\end{cases}\  \qquad (2.4) \end{aligned}
 ```
 
 
@@ -159,7 +175,7 @@ u_{i,j} = \varphi\left( x_{i},y_{j} \right),\ \ \ (i,j) \in \gamma.
 
 
 ```math
-u_{j} = \begin{bmatrix}
+\begin{aligned} u_{j} = \begin{bmatrix}
 u_{1,j} \\
 u_{2,j} \\
 \begin{matrix}
@@ -179,7 +195,7 @@ f_{m - 2,j}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 f_{m - 1,j} + \frac{1}{h_{1}^{2}}\varphi_{m,j}
 \end{matrix}
 \end{matrix}
-\end{bmatrix},
+\end{bmatrix}, \qquad (2.6) \end{aligned}
 ```
 
 
@@ -187,7 +203,7 @@ f_{m - 1,j} + \frac{1}{h_{1}^{2}}\varphi_{m,j}
 
 
 ```math
-\begin{matrix}
+\begin{aligned} \begin{matrix}
 D = diag\{ - \frac{1}{h_{2}^{2}},..., - \frac{1}{h_{2}^{2}}\}, \\
 C = \begin{bmatrix}
 \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
@@ -198,7 +214,7 @@ C = \begin{bmatrix}
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  - \frac{1}{h_{1}^{2}}\ \ \ \ \ \frac{2}{h_{1}^{2}} + \frac{2}{h_{2}^{2}}\
 \end{matrix}
 \end{bmatrix}
-\end{matrix}.
+\end{matrix}. \qquad (2.7) \end{aligned}
 ```
 
 
@@ -208,7 +224,7 @@ C = \begin{bmatrix}
 
 
 ```math
-Du_{j - 1} + Cu_{j} + Du_{j + 1} = f_{j},\ \ 1 \leq j \leq n - 1. \\
+\begin{aligned} Du_{j - 1} + Cu_{j} + Du_{j + 1} = f_{j},\ \ 1 \leq j \leq n - 1. \qquad (2.8) \end{aligned}
 ```
 
 
@@ -218,7 +234,7 @@ Du_{j - 1} + Cu_{j} + Du_{j + 1} = f_{j},\ \ 1 \leq j \leq n - 1. \\
 
 
 ```math
-\begin{bmatrix}
+\begin{aligned} \begin{bmatrix}
 C\ \ \ D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 D\ \ \ C\ \ \ D\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -242,7 +258,7 @@ f_{2}\ \ \ \ \ \ \ \ \  \\
 f_{n - 2}\ \ \ \ \ \ \ \ \  \\
 f_{n - 1} - Du_{n}
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (2.9) \end{aligned}
 ```
 
 
@@ -255,9 +271,9 @@ f_{n - 1} - Du_{n}
 最后，绘制精确解三维图像，为后续对比做准备。
 
 
-# 实验结果及分析
+## 实验结果及分析
 
-**3.1 步长=1/64的五点差分格式**
+### 3.1 步长=1/64的五点差分格式
 
 ![](images/fig_003.jpeg)
 ![](images/fig_004.jpeg)
@@ -271,12 +287,15 @@ f_{n - 1} - Du_{n}
 
 数值解总体近似与精确解，整体趋势一致。下面将局部放大观察，数值解在前半部分（3000节点编号）之前的波动幅度更小，后半部分波动更大，峰值更高。
 
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   ![](images/fig_006.jpeg)   ![](images/fig_007.jpeg)
+  --------------------------------------------------------------------------------------------------- ----------------------------------------------------------------------------------------------------
 
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-图 2‑6 步长为1/64的数值解与精确解对比（局部）
+  : 图 2‑6 步长为1/64的数值解与精确解对比（局部）
 
-**3.2 步长=1/128的五点差分格式**
+### 3.2 步长=1/128的五点差分格式
 
 首先绘制该补偿下的五点差分格式三维图像，观察到与精确解的图像近似，步长更小，网格更密集，说明该数值解计算正确。
 
@@ -290,12 +309,15 @@ f_{n - 1} - Du_{n}
 
 在局部区域（如节点编号 4900 到 5900 和 14500 到 15500），数值解的波动幅度与精确解相比有明显的差异。数值解在前半部分之前的波动幅度更小，后半部分波动更大，峰值更高。
 
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   ![](images/fig_010.jpg)   ![](images/fig_011.jpg)
+  -------------------------------------------------------------------------------------------------- ----------------------------------------------------------------------------------------------------
 
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-图 2‑9 步长为1/128的数值解与精确解对比（局部）
+  : 图 2‑9 步长为1/128的数值解与精确解对比（局部）
 
-# 总结
+## 总结
 
 1.  **步长的影响**：
 
@@ -315,9 +337,18 @@ f_{n - 1} - Du_{n}
 
 通过实验，验证了五点差分格式在求解二维Poisson方程时的有效性，并分析了不同步长对数值解精度的影响。实验结果表明，减小步长可以显著提高数值解的精度和稳定性，但会增加计算成本。
 
-**实验三 抛物型方程的数值解法**
+# 实验三 抛物型方程的数值解法
 
-# 实验试题
+## 实验试题
+
+```math
+\begin{cases}
+\frac{\partial u}{\partial t} = \frac{\partial^{2} u}{\partial x^{2}} + \sin t,\quad 0 < x < 1,\ t > 0, \\
+u_{x}(0,t) = u_{x}(1,t) = 0,\quad t > 0, \\
+u(x,0) = \cos \pi x,\quad 0 < x < 1. \qquad (3.1)
+\end{cases}
+```
+
 
 分别用向前差分格式和Grank-Nicolson格式求下列一维抛物方程的初边值问题的数值解：
 
@@ -327,20 +358,20 @@ f_{n - 1} - Du_{n}
 
 要求：网格分别取两组以及 比较不同数值方法之间的差异。
 
-# 试题分析及求解过程
+## 试题分析及求解过程
 
-**2.1 向前差分格式**
+### 2.1 向前差分格式
 
 对于一维抛物方程的初边值问题
 
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
 \frac{\partial u}{\partial t} = a\frac{\partial^{2}u}{\partial x^{2}} + f(x,t),\ \ 0 < x < 1,t > 0, \\
 u(x,0) = \varphi(x),\ \ 0 < x < 1, \\
 u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
-\end{cases}\
+\end{cases}\  \qquad (3.2) \end{aligned}
 ```
 
 
@@ -350,7 +381,7 @@ u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
 
 
 ```math
-G = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\}, \\
+\begin{aligned} G = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\}, \qquad (3.3) \end{aligned}
 ```
 
 
@@ -360,10 +391,8 @@ G = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\}, \\
 
 
 ```math
-\begin{aligned}
-h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
-\tau = \frac{T}{n},\ \ t_{k} = k\tau,(0 \leq k \leq n),
-\end{aligned}
+\begin{aligned} h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
+\tau = \frac{T}{n},\ \ t_{k} = k\tau,(0 \leq k \leq n), \qquad (3.4) \end{aligned} \\
 ```
 
 
@@ -375,11 +404,11 @@ h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
 \frac{u_{i,k + 1} - u_{i,k}}{\tau} = a\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} + f_{i,k},\  \\
 u_{i,0} = \varphi\left( x_{i} \right), \\
 u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
-\end{cases}\
+\end{cases}\  \qquad (3.5) \end{aligned}
 ```
 
 
@@ -391,10 +420,8 @@ u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
 
 
 ```math
-\begin{aligned}
-u_{i,k + 1} = ru_{i - 1,k} + (1 - 2r)u_{i,k} + ru_{i + 1,k} + f_{i,k}, \\
-1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{aligned}
+\begin{aligned} u_{i,k + 1} = ru_{i - 1,k} + (1 - 2r)u_{i,k} + ru_{i + 1,k} + f_{i,k}, \\
+1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1. \qquad (3.6) \end{aligned} \\
 ```
 
 
@@ -404,7 +431,7 @@ u_{i,k + 1} = ru_{i - 1,k} + (1 - 2r)u_{i,k} + ru_{i + 1,k} + f_{i,k}, \\
 
 
 ```math
-u_{k} = \begin{bmatrix}
+\begin{aligned} u_{k} = \begin{bmatrix}
 u_{1,k} \\
 u_{2,k} \\
 \begin{matrix}
@@ -424,7 +451,7 @@ u_{m - 1,k}
 \tau f_{m - 1,k} + r\varphi_{m,k}
 \end{matrix}
 \end{matrix}
-\end{bmatrix},
+\end{bmatrix}, \qquad (3.7) \end{aligned}
 ```
 
 
@@ -432,7 +459,7 @@ u_{m - 1,k}
 
 
 ```math
-R = \begin{bmatrix}
+\begin{aligned} R = \begin{bmatrix}
 1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 r\ \ \ \ \ 1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -440,7 +467,7 @@ r\ \ \ \ \ 1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ \ \ \ \ 1 - 2r\ \ \ \ r \\
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ \ \ \ \ 1 - 2r\
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (3.8) \end{aligned}
 ```
 
 
@@ -450,7 +477,7 @@ r\ \ \ \ \ 1 - 2r\ \ \ \ r\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
 
 
 ```math
-Ru_{k} - Iu_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1. \\
+\begin{aligned} Ru_{k} - Iu_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1. \qquad (3.9) \end{aligned}
 ```
 
 
@@ -460,7 +487,7 @@ Ru_{k} - Iu_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1. \\
 
 
 ```math
-\begin{bmatrix}
+\begin{aligned} \begin{bmatrix}
  - I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 R\  - I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -484,7 +511,7 @@ u_{n}
  - f_{n - 1}\ \ \ \ \ \ \ \ \  \\
 {- f}_{n}\ \ \ \ \ \ \ \ \ \ \ \ \
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (3.10) \end{aligned}
 ```
 
 
@@ -504,12 +531,12 @@ u_{n}
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
 \frac{u_{i,k + 1} - u_{i,k}}{\tau} = \frac{a}{2}\left[ \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} + \frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} \right] \\
  + \frac{1}{2}[ f\left( x_{i},t_{k} \right) + f\left( x_{i},t_{k + 1} \right)],\  \\
 u_{i,0} = \varphi\left( x_{i} \right), \\
 u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
-\end{cases}\
+\end{cases}\  \qquad (3.11) \end{aligned}
 ```
 
 
@@ -521,11 +548,9 @@ u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
 
 
 ```math
-\begin{aligned}
-- \frac{r}{2}u_{i - 1,k + 1} + (1 + r)u_{i,k + 1} - \frac{r}{2}u_{i + 1,k + 1} = \\
+\begin{aligned} - \frac{r}{2}u_{i - 1,k + 1} + (1 + r)u_{i,k + 1} - \frac{r}{2}u_{i + 1,k + 1} = \\
 \frac{r}{2}u_{i - 1,k} + (1 - r)u_{i,k} + \frac{r}{2}u_{i + 1,k} + \frac{\tau}{2}[ f_{i,k + 1} + f_{i,k}], \\
-1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{aligned}
+1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1. \qquad (3.12) \end{aligned} \\
 ```
 
 
@@ -535,7 +560,7 @@ u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
 
 
 ```math
-u_{k} = \begin{bmatrix}
+\begin{aligned} u_{k} = \begin{bmatrix}
 u_{1,k} \\
 u_{2,k} \\
 \begin{matrix}
@@ -555,7 +580,7 @@ u_{m - 1,k}
 \frac{\tau}{2}{(f}_{m - 1,k} + f_{m - 1,k + 1}) + \frac{r}{2}{(\varphi}_{m - 1,k} + \varphi_{m - 1,k + 1})
 \end{matrix}
 \end{matrix}
-\end{bmatrix},
+\end{bmatrix}, \qquad (3.13) \end{aligned}
 ```
 
 
@@ -563,7 +588,7 @@ u_{m - 1,k}
 
 
 ```math
-R_{1} = \begin{bmatrix}
+\begin{aligned} R_{1} = \begin{bmatrix}
 1 + r\ \ \  - \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
  - \frac{r}{2}\ \ \ \ \ 1 + r\ \ \ \  - \frac{r}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -580,7 +605,7 @@ R_{2} = \begin{bmatrix}
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ \ \ 1 - r\ \ \ \ \ \ \frac{r}{2} \\
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r}{2}\ \ \ \ \ 1 - r\
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (3.14) \end{aligned}
 ```
 
 
@@ -590,7 +615,7 @@ R_{2} = \begin{bmatrix}
 
 
 ```math
-R_{2}u_{k} - {R_{1}u}_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1. \\
+\begin{aligned} R_{2}u_{k} - {R_{1}u}_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1. \qquad (3.15) \end{aligned}
 ```
 
 
@@ -600,7 +625,7 @@ R_{2}u_{k} - {R_{1}u}_{k + 1} = - f_{k},\ \ 1 \leq k \leq n - 1. \\
 
 
 ```math
-\begin{bmatrix}
+\begin{aligned} \begin{bmatrix}
  - R_{1}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 R_{2}\  - R_{1}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -624,7 +649,7 @@ u_{n}
  - f_{n - 1}\ \ \ \ \ \ \ \ \ \  \\
 {- f}_{n\ \ \ \ \ \ }\ \ \ \ \ \ \ \ \ \
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (3.16) \end{aligned}
 ```
 
 
@@ -634,9 +659,9 @@ u_{n}
 以下以作为示例。
 
 
-# 实验结果及分析
+## 实验结果及分析
 
-**3.1 向前差分格式**
+### 3.1 向前差分格式
 
 3.1.1 $`h = \frac{1}{40},\ \tau = \frac{1}{3200}`$的向前差分格式
 
@@ -702,7 +727,7 @@ u_{n}
 
 从误差绝对值来看，步长减小，误差并没有显著减小。当空间步长 *h* 减小到一定程度时，误差可能会趋于饱和，即误差不再显著减小。这可能是由于其他误差来源（如时间步长的误差）开始主导。即使空间步长减小，误差在时间积分过程中可能会累积。由于时间步长相对较大，累积误差可能掩盖了空间步长减小带来的误差减少。
 
-# 总结
+## 总结
 
 **向前差分格式**：
 
@@ -714,9 +739,18 @@ u_{n}
 
 通过本次实验，深刻体会到不同数值方法的特点和适用场景。向前差分格式简单易实现，但在稳定性和精度上受限较大；Grank-Nicolson格式虽实现稍复杂，但其高精度和无条件稳定性使其在求解抛物型方程时更具优势。
 
-**实验四 双曲型方程的数值解法**
+# 实验四 双曲型方程的数值解法
 
-# 实验试题
+## 实验试题
+
+```math
+\begin{cases}
+\frac{\partial^{2} u}{\partial t^{2}} - \frac{\partial^{2} u}{\partial x^{2}} = 0,\quad 0 < x < 1,\ t > 0, \\
+u(0,t) = u(1,t) = 0,\quad t > 0, \\
+u(x,0) = 2\sin \pi x,\quad u_{t}(x,0) = 0,\quad 0 < x < 1. \qquad (4.1)
+\end{cases}
+```
+
 
 分别用显式和隐式差分格式求下列波动方程混合边值问题的数值解：
 
@@ -730,20 +764,20 @@ u_{n}
 
 2.  比较 时在处两种方法得到的数值解。
 
-# 试题分析及求解过程
+## 试题分析及求解过程
 
-**2.1 显式格式**
+### 2.1 显式格式
 
 对于波动方程的初边值问题
 
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
 \frac{\partial^{2}u}{\partial t^{2}} = a\frac{\partial^{2}u}{\partial x^{2}} + f(x,t),\ \ 0 < x < 1,t > 0, \\
 u(x,0) = \varphi(x),\ \ 0 < x < 1, \\
 u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
-\end{cases}\
+\end{cases}\  \qquad (4.2) \end{aligned}
 ```
 
 
@@ -753,7 +787,7 @@ u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
 
 
 ```math
-\Omega = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\}, \\
+\begin{aligned} \Omega = \left\{ (x,y) \mid 0 \leq x \leq 1,0 \leq t \leq T \right\}, \qquad (4.3) \end{aligned}
 ```
 
 
@@ -763,10 +797,8 @@ u(0,t) = \alpha(t),u(1,t) = \beta(t),\ \ 0 \leq t \leq T.
 
 
 ```math
-\begin{aligned}
-h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
-\tau = \frac{T}{n},\ \ t_{k} = k\tau,(0 \leq k \leq n),
-\end{aligned}
+\begin{aligned} h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
+\tau = \frac{T}{n},\ \ t_{k} = k\tau,(0 \leq k \leq n), \qquad (4.4) \end{aligned} \\
 ```
 
 
@@ -778,11 +810,11 @@ h = \frac{1}{m},\ \ x_{i} = ih,\ (0 \leq i \leq m), \\
 
 
 ```math
-\begin{cases}
+\begin{aligned} \begin{cases}
 \frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} + f_{i,k},\  \\
 u_{i,0} = \varphi\left( x_{i} \right), \\
 u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
-\end{cases}\
+\end{cases}\  \qquad (4.5) \end{aligned}
 ```
 
 
@@ -794,10 +826,8 @@ u_{0,k} = \alpha\left( t_{k} \right),\ \ u_{m,k} = \beta\left( t_{k} \right).
 
 
 ```math
-\begin{aligned}
-u_{i,k + 1} = r^{2}u_{i - 1,k} + 2\left( 1 - 2r^{2} \right)u_{i,k} + r^{2}u_{i + 1,k} - u_{i,k - 1} + {\tau^{2}f}_{i,k}, \\
-1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{aligned}
+\begin{aligned} u_{i,k + 1} = r^{2}u_{i - 1,k} + 2\left( 1 - 2r^{2} \right)u_{i,k} + r^{2}u_{i + 1,k} - u_{i,k - 1} + {\tau^{2}f}_{i,k}, \\
+1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1. \qquad (4.6) \end{aligned} \\
 ```
 
 
@@ -807,7 +837,7 @@ u_{i,k + 1} = r^{2}u_{i - 1,k} + 2\left( 1 - 2r^{2} \right)u_{i,k} + r^{2}u_{i +
 
 
 ```math
-u_{k} = \begin{bmatrix}
+\begin{aligned} u_{k} = \begin{bmatrix}
 u_{1,k} \\
 u_{2,k} \\
 \begin{matrix}
@@ -827,7 +857,7 @@ u_{m - 1,k}
 \tau^{2}f_{m - 1,k} + r^{2}\varphi_{m,k}
 \end{matrix}
 \end{matrix}
-\end{bmatrix},
+\end{bmatrix}, \qquad (4.7) \end{aligned}
 ```
 
 
@@ -835,7 +865,7 @@ u_{m - 1,k}
 
 
 ```math
-R = \begin{bmatrix}
+\begin{aligned} R = \begin{bmatrix}
 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -843,7 +873,7 @@ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ 
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2} \\
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (4.8) \end{aligned}
 ```
 
 
@@ -853,7 +883,7 @@ r^{2}\ \ \ \ \ 2\left( 1 - 2r^{2} \right)\ \ \ \ r^{2}\ \ \ \ \ \ \ \ \ \ \ \ \ 
 
 
 ```math
-Iu_{k - 1} - Ru_{k} + Iu_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1. \\
+\begin{aligned} Iu_{k - 1} - Ru_{k} + Iu_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1. \qquad (4.9) \end{aligned}
 ```
 
 
@@ -863,7 +893,7 @@ Iu_{k - 1} - Ru_{k} + Iu_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1. \\
 
 
 ```math
-\begin{bmatrix}
+\begin{aligned} \begin{bmatrix}
  - R\ \ \ I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 I - R\ \ \ I\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -887,21 +917,21 @@ f_{2}\ \ \ \ \ \ \ \ \  \\
 f_{n - 2}\ \ \ \ \ \ \ \ \  \\
 f_{n - 1} - u_{n}
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (4.10) \end{aligned}
 ```
 
 
 
-**2.2 隐式格式**
+### 2.2 隐式格式
 
 将（4.3）作隐式格式：
 
 
 
 ```math
-\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a^{2}\left[ \begin{aligned} \theta\frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} \\
+\begin{aligned} \frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = a^{2}\left[ \begin{aligned} \theta\frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} \\
  + (1 - 2\theta)\frac{u_{i - 1,k} - 2u_{i,k} + u_{i + 1,k}}{h^{2}} \\
- + \theta\frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} \end{aligned} \right] + f_{i,k},
+ + \theta\frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} \end{aligned} \right] + f_{i,k}, \qquad (4.11) \end{aligned} \\
 ```
 
 
@@ -913,8 +943,8 @@ f_{n - 1} - u_{n}
 
 
 ```math
-\frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = \frac{a^{2}}{2}\left[ \begin{aligned} \frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} \\
- + \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} \end{aligned} \right] + f_{i,k},
+\begin{aligned} \frac{u_{i,k - 1} - 2u_{i,k} + u_{i,k + 1}}{\tau^{2}} = \frac{a^{2}}{2}\left[ \begin{aligned} \frac{u_{i - 1,k - 1} - 2u_{i,k - 1} + u_{i + 1,k - 1}}{h^{2}} \\
+ + \frac{u_{i - 1,k + 1} - 2u_{i,k + 1} + u_{i + 1,k + 1}}{h^{2}} \end{aligned} \right] + f_{i,k}, \qquad (4.12) \end{aligned} \\
 ```
 
 
@@ -924,11 +954,9 @@ f_{n - 1} - u_{n}
 
 
 ```math
-\begin{aligned}
-- ({\frac{1}{2}r}^{2}u_{i - 1,k + 1} - \left( 1 + r^{2} \right)u_{i,k + 1} + \frac{1}{2}r^{2}u_{i + 1,k + 1}) \\
+\begin{aligned} - ({\frac{1}{2}r}^{2}u_{i - 1,k + 1} - \left( 1 + r^{2} \right)u_{i,k + 1} + \frac{1}{2}r^{2}u_{i + 1,k + 1}) \\
  = {\frac{1}{2}r}^{2}u_{i - 1,k - 1} - \left( 1 + r^{2} \right)u_{i,k - 1} + \frac{1}{2}r^{2}u_{i + 1,k - 1} + 2u_{i,k} + {\tau^{2}f}_{i,k}, \\
-1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1.
-\end{aligned}
+1 \leq i \leq m - 1,\ \ 1 \leq k \leq n - 1. \qquad (4.13) \end{aligned} \\
 ```
 
 
@@ -938,7 +966,7 @@ f_{n - 1} - u_{n}
 
 
 ```math
-u_{k} = \begin{bmatrix}
+\begin{aligned} u_{k} = \begin{bmatrix}
 u_{1,k} \\
 u_{2,k} \\
 \begin{matrix}
@@ -958,7 +986,7 @@ u_{m - 1,k}
 \tau^{2}f_{m - 1,k} + \frac{r^{2}}{2}{(\varphi}_{m - 1,k - 1} + \varphi_{m - 1,k + 1})
 \end{matrix}
 \end{matrix}
-\end{bmatrix},
+\end{bmatrix}, \qquad (4.14) \end{aligned}
 ```
 
 
@@ -966,7 +994,7 @@ u_{m - 1,k}
 
 
 ```math
-R = \begin{bmatrix}
+\begin{aligned} R = \begin{bmatrix}
  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \frac{r^{2}}{2}\ \ \ \  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -974,7 +1002,7 @@ R = \begin{bmatrix}
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r^{2}}{2}\ \ \ \ \  - (1 + r^{2})\ \ \ \ \frac{r^{2}}{2} \\
 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{r^{2}}{2}\ \ \ \ \  - (1 + r^{2})\
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (4.15) \end{aligned}
 ```
 
 
@@ -984,7 +1012,7 @@ R = \begin{bmatrix}
 
 
 ```math
-- Ru_{k - 1} - 2Iu_{k} + {Ru}_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1. \\
+\begin{aligned} - Ru_{k - 1} - 2Iu_{k} + {Ru}_{k + 1} = f_{k},\ \ 1 \leq k \leq n - 1. \qquad (4.16) \end{aligned}
 ```
 
 
@@ -994,7 +1022,7 @@ R = \begin{bmatrix}
 
 
 ```math
-\begin{bmatrix}
+\begin{aligned} \begin{bmatrix}
  - 2I\ \ \ R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
  - R - 2I\ \ \ R\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \\
 \begin{matrix}
@@ -1018,12 +1046,12 @@ f_{2}\ \ \ \ \ \ \ \ \  \\
 f_{n - 2}\ \ \ \ \ \ \ \ \  \\
 f_{n - 1} - Ru_{n}
 \end{matrix}
-\end{bmatrix}.
+\end{bmatrix}. \qquad (4.17) \end{aligned}
 ```
 
 
 
-# 实验结果及分析
+## 实验结果及分析
 
 **3.1****的数值解**
 
@@ -1045,7 +1073,9 @@ f_{n - 1} - Ru_{n}
 
 图片难以观察出显式和隐式数值解的精确度和差别，接下来选取指定时间点的数值作对比，当时，分别对应k=5，10，15，20时的精确解和数值解：
 
+  -------------------------------------------------------------
         0.5             1             1.5              2
+  --------------- -------------- -------------- ---------------
          0              0              0               0
 
     0.190983006    -0.58778525    -0.19098301     0.587785252
@@ -1065,8 +1095,9 @@ f_{n - 1} - Ru_{n}
     0.363271264    -1.11803399    -0.36327126     1.118033989
 
     0.190983006    -0.58778525    -0.19098301     0.587785252
+  -------------------------------------------------------------
 
-表 4-1 ,时的精确解
+  : 表 4-1 ,时的精确解
 
 表 4-2显式数值解
 表 4-3 隐式数值解
@@ -1116,7 +1147,9 @@ t=0.5         t=1         t=1.5         t=2
 
 当时，分别对应k=10，20，30，40时的精确解和数值解：
 
+  ---------------------------------------------------------------------------------
           0.5                   1                  1.5                   2
+  -------------------- ------------------- -------------------- -------------------
            0                    0                   0                    0
 
    0.0966818164067699   -0.61042496477978   -0.096681816406770   0.610424964779777
@@ -1136,10 +1169,13 @@ t=0.5         t=1         t=1.5         t=2
    0.183899743001820    -1.16109728092609   -0.183899743001821   1.16109728092609
 
    0.0966818164067700   -0.61042496477978   -0.096681816406770   0.610424964779777
+  ---------------------------------------------------------------------------------
 
-表 4-4,时的精确解
+  : 表 4-4,时的精确解
 
+  ----------------------------------------------------------------------------------
          t=0.5                 t=1                 t=1.5                 t=2
+  -------------------- -------------------- -------------------- -------------------
            0                    0                    0                    0
 
    0.0993465862996154   -0.609507714242681   -0.105261440081330   0.608486224255951
@@ -1159,10 +1195,13 @@ t=0.5         t=1         t=1.5         t=2
    0.188968436543856    -1.15935256672533    -0.200219157007921   1.15740957730891
 
    0.0993465862996155   -0.609507714242682   -0.105261440081330   0.608486224255950
+  ----------------------------------------------------------------------------------
 
-表 4-5 ,时的显式数值解
+  : 表 4-5 ,时的显式数值解
 
+  ---------------------------------------------------------------------------------
          t=0.5                t=1                 t=1.5                 t=2
+  ------------------- -------------------- -------------------- -------------------
            0                   0                    0                    0
 
    0.104276435945456   -0.607612934907704   -0.121732263545762   0.604115745687775
@@ -1182,8 +1221,9 @@ t=0.5         t=1         t=1.5         t=2
    0.198345567803922   -1.15574848225839    -0.231548524977109   1.14909643306573
 
    0.104276435945458   -0.607612934907706   -0.121732263545761   0.604115745687774
+  ---------------------------------------------------------------------------------
 
-表 4-6 ,时的隐式数值解
+  : 表 4-6 ,时的隐式数值解
 
 显式数值解的误差总和：0.2881，
 
@@ -1191,7 +1231,7 @@ t=0.5         t=1         t=1.5         t=2
 
 因此，在这种步长情况下，显式总误差小于隐式总误差。
 
-# 总结
+## 总结
 
 **显式与隐式格式的对比：**
 
