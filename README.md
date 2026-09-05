@@ -1,65 +1,169 @@
-# Numerical Solution of Differential Equations — MATLAB Coursework
+# Numerical Solution of Differential Equations — MATLAB
 
-> 本科课程《微分方程数值解》的 MATLAB 实现。涵盖**常微分方程初值问题、抛物型、椭圆型、双曲型**四类方程的数值解法，包含不同步长、不同格式下的误差对比与收敛性分析。
+> Classical finite-difference and linear-multistep methods for ODE initial-value problems and second-order PDEs (parabolic, elliptic, hyperbolic), with step-size and scheme comparisons, error analysis, and convergence observations.
 
-## 内容概览
+## Overview
 
-| 类别 | 典型问题 | 数值方法 | 目录 |
-|------|----------|----------|------|
-| 常微分方程初值问题 | $y' = f(t,y),\ y(t_0)=y_0$ | 二阶显式 / 隐式 Adams、梯形法、Euler；步长与格式误差对比 | `ODE/` |
-| 抛物型 PDE | $u_t = a\,u_{xx} + f(x,t)$ | 向前差分（显式）、Crank–Nicolson（调用追赶法解三对角）、迎风格式 | `Parabolic/` |
-| 椭圆型 PDE | $u_{xx} + u_{yy} = f(x,y)$（Poisson） | 五点差分格式（DCD 矩阵 + Kronecker 积），步长 $h=1/64$ 与 $1/128$ 对比 | `Elliptic/` |
-| 双曲型 PDE | $u_{tt} = a^2 u_{xx}$（波动方程） | 显式 / 隐式格式、迎风格式，三对角 / 块三对角方程组求解 | `Hyperbolic/` |
+| Category | Prototype | Numerical methods | Directory |
+|----------|-----------|-------------------|-----------|
+| ODE IVP | `y' = f(t, y), y(t0) = y0` | 2nd-order explicit Adams, trapezoidal (implicit Adams), Euler; step-size and scheme error comparison | `ODE/` |
+| Parabolic PDE | `u_t = a u_xx + f(x,t)` | Forward (explicit), Crank–Nicolson, upwind; Thomas/chasing for tridiagonal systems | `Parabolic/` |
+| Elliptic PDE | Poisson `u_xx + u_yy = f(x,y)` | Five-point stencil with Kronecker-product block matrix; grids `h = 1/64` and `1/128` | `Elliptic/` |
+| Hyperbolic PDE | Wave equation `u_tt = a^2 u_xx` | Explicit, implicit, and upwind schemes; block-tridiagonal solver | `Hyperbolic/` |
 
-## 目录结构
+## Directory Structure
 
 ```
 numerical-solution-of-differential-equations/
-├── ODE/            # 常微分方程初值问题
-├── Parabolic/      # 抛物型 PDE
-├── Elliptic/       # 椭圆型 PDE
-├── Hyperbolic/     # 双曲型 PDE
-├── report/         # 课程设计报告（docx，已匿名）
+├── ODE/            # ODE initial-value problems
+├── Parabolic/      # Parabolic PDEs
+├── Elliptic/       # Elliptic PDEs
+├── Hyperbolic/     # Hyperbolic PDEs
 ├── README.md
 └── LICENSE
 ```
 
-## 文件说明
+## 1. ODE Initial-Value Problems (`ODE/`)
 
-### `ODE/` — 常微分方程初值问题
-- `Adams_2.m`：二阶显式 / 隐式 Adams 与符号精确解对比（问题 $y'=2y-3t^2,\ y(0)=2$）。
-- `h1h2Adams.m`：两种步长 $h_1/h_2$ 下二阶显式 Adams 的误差对比。
-- `ladder_adams.m`：梯形法（隐式单步 Adams 类）实现与对比。
+**Problem.** Solve the nonlinear IVP
 
-### `Parabolic/` — 抛物型 PDE
-- `GrankNicolsonParabolic.m`：Crank–Nicolson 格式函数，内部调用 `Chasing3` 求解三对角方程组。
-- `Chasing3.m`：追赶法（Thomas 算法）求解三对角线性方程组。
-- `paowu.m`：抛物型方程向前差分（显式）格式。
-- `paowu_GN.m`：抛物型方程 Crank–Nicolson 格式。
-- `paowu_xiangqian.m`：抛物型方程迎风（向前）格式。
-- `testParabolic.m`：抛物型集成测试 / 绘图脚本。
+```math
+y'(t) = 4 t \sqrt{y(t)}, \quad y(0) = 1, \quad t \in [0, 2]
+```
 
-### `Elliptic/` — 椭圆型 PDE
-- `tuoyuan.m`：椭圆型 Poisson 方程五点差分主程序。
-- `tuoyuan_5point.m`：五点差分格式，步长 $h=1/64$ 与 $1/128$ 的数值解、误差及三维曲面对比。
+whose exact solution is `y(t) = (t^2 + 1)^2`.
 
-### `Hyperbolic/` — 双曲型 PDE
-- `Chasing.m` / `Chasing3.m`：追赶法解三对角 / 块三对角方程组（双曲隐式格式用）。
-- `Hyperbolic2.m`：双曲型另一种格式实现。
-- `shuangqu.m`：双曲型波动方程数值求解。
-- `shuangqu_xian.m`：双曲型显式 / 隐式格式（初始条件 $u(x,0)=2\sin(\pi x)$，精确解 $\sin\pi(x-t)+\sin\pi(x+t)$）。
-- `testHyperbolic.m` / `testHyperbolic2.m`：双曲型集成测试 / 绘图脚本。
+**Methods.**
 
-## 运行环境
+- **2nd-order explicit Adams (Bashforth).** Two-step predictor using previously computed slopes:
 
-- 需要 **MATLAB**（代码使用基础数值计算与绘图，无额外工具箱依赖）。
-- 脚本类 `.m` 直接在命令行运行即可；函数类（如 `GrankNicolsonParabolic`）按帮助注释传入参数调用；`test*.m` 为集成测试与绘图入口。
+```math
+y_{n+1} = y_n + \frac{h}{2}\bigl(3 f(t_n, y_n) - f(t_{n-1}, y_{n-1})\bigr)
+```
 
-## 课程设计报告
+- **Trapezoidal (implicit).** One-step implicit Adams–Moulton rule, solved algebraically at each step:
 
-完整报告见 [`report/differential-equations-numerical-report.docx`](report/differential-equations-numerical-report.docx)。
-GitHub 不直接在线渲染 `.docx`，请下载后查看。
+```math
+y_{n+1} = y_n + \frac{h}{2}\bigl(f(t_n, y_n) + f(t_{n+1}, y_{n+1})\bigr)
+```
+
+- **Euler.** Used only to generate the starting value `y_1` for the Adams scheme.
+
+**Findings.**
+
+- Halving the step size from `h = 0.1` to `h = 0.05` visibly improves the Adams trajectory, confirming the expected convergence order.
+- At the same step size `h = 0.1`, the trapezoidal result is almost indistinguishable from the exact solution, while the explicit Adams still deviates.
+- Cost trade-off: the trapezoidal method requires solving an implicit equation per step (higher CPU time), whereas explicit Adams is cheaper per step but less accurate for the same `h`.
+
+**Files.**
+
+- `Adams_2.m` — explicit Adams with symbolic exact-solution overlay
+- `h1h2Adams.m` — step-size comparison (`h = 0.1` vs `0.05`) for explicit Adams
+- `ladder_adams.m` — trapezoidal vs explicit Adams at the same step size
+
+## 2. Parabolic PDEs (`Parabolic/`)
+
+**Problem.** 1-D heat-type equation with source term on `(x, t) \in (0, 1) \times (0, T]`:
+
+```math
+u_t = a u_{xx} + f(x, t)
+```
+
+with given initial and Dirichlet boundary data. The example implemented uses exact solution `u(x,t) = e^{-2\pi^2 t} \cos(\pi x) + 1 - \cos(t)`.
+
+**Methods.**
+
+- **Forward (explicit) scheme.** First-order in time, second-order in space; conditionally stable under the mesh-ratio restriction `r = a \tau / h^2 \le 1/2`.
+- **Crank–Nicolson.** Second-order in both space and time, unconditionally stable; each time step requires solving a tridiagonal system, handled by the Thomas (chasing) algorithm.
+- **Upwind.** A one-sided spatial discretization for convection-dominated or asymmetric settings.
+
+**Implementation notes.** The coefficient matrix for a `(m-1)`-node spatial discretization is built from block-tridiagonal Kronecker products of the identity and the standard second-difference matrix. The right-hand-side vector incorporates the source term plus the initial layer.
+
+**Findings.**
+
+- Forward difference is easy to implement but is constrained by a strict stability limit on the time step.
+- Crank–Nicolson is more robust: larger time steps are allowed while preserving second-order accuracy, making it preferable for parabolic problems where efficiency matters.
+
+**Files.**
+
+- `GrankNicolsonParabolic.m` — Crank–Nicolson driver (calls `Chasing3`)
+- `Chasing3.m` — Thomas algorithm for tridiagonal systems
+- `paowu.m` — forward (explicit) scheme
+- `paowu_GN.m` — Crank–Nicolson scheme
+- `paowu_xiangqian.m` — upwind scheme
+- `testParabolic.m` — integrated test and animation frame capture
+
+## 3. Elliptic PDEs (`Elliptic/`)
+
+**Problem.** 2-D Poisson equation with zero Dirichlet boundary conditions on the unit square:
+
+```math
+-\Delta u = f(x, y), \quad (x,y) \in (0,1)^2
+```
+
+with the test case exact solution `u(x,y) = e^{\pi(x+y)} \sin(\pi x) \sin(\pi y)`.
+
+**Method.** Standard five-point finite-difference stencil:
+
+```math
+\frac{4 u_{i,j} - u_{i+1,j} - u_{i-1,j} - u_{i,j+1} - u_{i,j-1}}{h^2} = f_{i,j}
+```
+
+The resulting linear system is assembled as a block-tridiagonal matrix `DCD` using Kronecker products: `main_diag = I \otimes C`, `off_diagonals = E \otimes D`, where `C` is the 1-D second-difference matrix and `D` is the coupling matrix for the `y` direction. The interior nodal values are obtained by direct inversion and then padded back onto the full grid.
+
+**Findings.**
+
+- At `h = 1/64` and `h = 1/128` the numerical solution tracks the exact solution closely across all interior nodes.
+- Finer grids reduce the truncation error as expected from the `O(h^2)` spatial discretization.
+- Visualizing the solution surface (`mesh` plots) confirms the boundary conditions and the qualitative shape of the exact solution.
+
+**Files.**
+
+- `tuoyuan.m` — main five-point Poisson solver
+- `tuoyuan_5point.m` — five-point stencil with `h = 1/64` and `1/128` comparisons, error plots, and 3-D surface visualization
+
+## 4. Hyperbolic PDEs (`Hyperbolic/`)
+
+**Problem.** 1-D wave equation (mixed initial-boundary-value problem):
+
+```math
+u_{tt} = a^2 u_{xx}, \quad x \in (0,1), \; t \in (0,2]
+```
+
+with initial displacement `u(x,0) = 2 \sin(\pi x)` and exact solution `u(x,t) = \sin\pi(x-t) + \sin\pi(x+t)`.
+
+**Methods.**
+
+- **Explicit scheme.** Three-time-level stencil:
+
+```math
+u_j^{k+1} = 2(1-r^2) u_j^k + r^2\bigl(u_{j+1}^k + u_{j-1}^k\bigr) - u_j^{k-1}, \quad r = a \tau / h
+```
+
+Stable when `r \le 1` (CFL condition).
+
+- **Implicit scheme.** The future time level `u^{k+1}` is coupled into the stencil, producing a block-tridiagonal linear system solved by the chasing method. This removes the CFL restriction but increases per-step cost.
+
+- **Upwind scheme.** One-sided spatial discretization for transport-dominated behavior.
+
+**Findings.**
+
+- Both explicit and implicit schemes produce numerical solutions close to the exact traveling-wave solution.
+- At fixed sampling times, the explicit and implicit results are visually similar; the explicit scheme is cheaper per step but requires satisfying the CFL condition.
+
+**Files.**
+
+- `shuangqu.m` / `shuangqu_xian.m` — explicit and implicit wave-equation solvers
+- `Chasing.m` / `Chasing3.m` — tridiagonal and block-tridiagonal chasing solvers
+- `Hyperbolic2.m` — additional format implementation
+- `testHyperbolic.m` / `testHyperbolic2.m` — integrated tests and comparison plots
+
+## Running the Code
+
+- Requires **MATLAB** with basic numerical and plotting support; no external toolboxes are needed.
+- Each `.m` file is self-contained. Scripts that start with `test*.m` are intended as entry points that run a complete method and produce comparison plots.
+- For the Parabolic and Hyperbolic implicit schemes, make sure the corresponding `Chasing*.m` files are on the MATLAB path.
 
 ## License
 
-MIT — 见 [LICENSE](LICENSE)。
+MIT — see [LICENSE](LICENSE).
